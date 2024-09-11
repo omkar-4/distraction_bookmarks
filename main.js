@@ -21,6 +21,7 @@ function addBookmark(title, description, summary, link) {
 const isDev = process.env.NODE_ENV === "development"; // Check if in development mode
 
 const createWindow = () => {
+  console.log("Creating window...");
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
@@ -34,7 +35,7 @@ const createWindow = () => {
   });
 
   // and load the index.html of the app.
-  mainWindow.loadFile("index.html");
+  // mainWindow.loadFile("index.html");
 
   // Load URL in development or index.html in production
   if (isDev) {
