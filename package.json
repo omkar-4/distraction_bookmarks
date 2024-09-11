@@ -12,5 +12,9 @@
   "description": "A cross-platform desktop bookmark manager app using Electron, MERN stack, and Tailwind CSS for managing tasks with CRUD operations and file uploads.",
   "devDependencies": {
     "electron": "^32.0.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "sqlite3": "^5.1.7"
   }
 }
