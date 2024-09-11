@@ -1,17 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 const VersionInfo = () => {
   const [versionInfo, setVersionInfo] = useState({
-    chrome: '',
-    node: '',
-    electron: '',
+    chrome: "",
+    node: "",
+    electron: "",
   });
 
   useEffect(() => {
-    if (window.electron && typeof window.electron.getVersionInfo === 'function') {
+    if (
+      window.electron &&
+      typeof window.electron.getVersionInfo === "function"
+    ) {
       setVersionInfo(window.electron.getVersionInfo());
     } else {
-      console.error('getVersionInfo function is not available.');
+      console.error("getVersionInfo function is not available.");
     }
   }, []);
 
