@@ -1,11 +1,32 @@
 // preload.js
+const { contextBridge } = require('electron');
 
-// All the Node.js APIs are available in the preload process.
-// It has the same sandbox as a Chrome extension.
+contextBridge.exposeInMainWorld('electron', {
+  getVersionInfo: () => ({
+    chrome: process.versions.chrome,
+    node: process.versions.node,
+    electron: process.versions.electron,
+  }),
+});
+
+
+
 window.addEventListener("DOMContentLoaded", () => {
+  console.log("preloader running ...");
+  
   const replaceText = (selector, text) => {
     const element = document.getElementById(selector);
     if (element) element.innerText = text;
+
+    window.getVersionInfo = () => {
+      let userAgent = navigator.userAgent; 
+
+      return {
+        chrome: process.versions.chrome,
+        node: process.versions.node,
+        electron: process.versions.electron,
+      };
+    };
   };
 
   for (const dependency of ["chrome", "node", "electron"]) {
