@@ -39,7 +39,7 @@ const createWindow = () => {
   // Load URL in development or index.html in production
   if (isDev) {
     mainWindow.loadURL("http://localhost:5173"); // Vite dev server
-    mainWindow.webContents.openDevTools(); // Open DevTools in dev mode
+    // mainWindow.webContents.openDevTools(); // Open DevTools in dev mode
   } else {
     mainWindow.loadFile(path.join(__dirname, "frontend/dist/index.html")); // Vite production build
   }
