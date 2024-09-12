@@ -1,8 +1,13 @@
 // Modules to control application life and create native browser window
-const { app, autoUpdater, dialog, BrowserWindow } = require("electron");
+const { app, dialog, BrowserWindow } = require("electron");
 const path = require("node:path");
 require("dotenv").config();
 const { db, addBookmark } = require("./db");
+
+const { autoUpdater, AppUpdater } = require("electron-updater");
+
+autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = true;
 
 const isDev = process.env.NODE_ENV === "dev"; // true/false
 
@@ -29,12 +34,30 @@ const createWindow = () => {
   }
 };
 
+// show message to user that update is available
+autoUpdater.on("update-available", () => {
+  dialog
+    .showMessageBox({
+      type: "info",
+      title: "Update Available",
+      message: "An update is available. Do you want to update now?",
+      buttons: ["Yes", "No"],
+    })
+    .then((result) => {
+      if (result.response === 0) {
+        autoUpdater.quitAndInstall();
+      }
+    });
+});
+
 app.whenReady().then(() => {
   createWindow();
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
+
+  autoUpdater.checkForUpdates();
 });
 
 app.on("window-all-closed", () => {

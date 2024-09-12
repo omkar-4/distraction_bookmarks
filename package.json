@@ -1,6 +1,6 @@
 {
   "name": "distraction_bookmarks",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -23,14 +23,14 @@
     "linux": {
       "target": "deb"
     },
-    "publish": {
-      "provider": "github",
-      "owner": "omkar-4",
-      "repo": "distraction_bookmarks"
-    },
     "directories": {
       "output": "out"
     }
+  },
+  "publish": {
+    "provider": "github",
+    "owner": "omkar-4",
+    "releaseType": "release"
   },
   "keywords": [],
   "author": "Omkar Iyer",
@@ -56,8 +56,5 @@
     "sqlite3": "^5.1.7",
     "update-electron-app": "^3.0.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/omkar-4/distraction_bookmarks"
-  }
+  "repository": "https://github.com/omkar-4/distraction_bookmarks"
 }
