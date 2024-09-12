@@ -8,7 +8,29 @@
     "start:electron": "electron .",
     "start": "concurrently \"npm run start:frontend\" \"npm run start:electron\"",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make:frontend": "cd frontend && npm run build && cd ..",
+    "make": "npm run make:frontend && electron-forge make"
+  },
+  "build": {
+    "appId": "com.omkar.distraction_bookmarks",
+    "productName": "Distraction Bookmarks app",
+    "mac": {
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "deb"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "omkar-4",
+      "repo": "distraction_bookmarks"
+    },
+    "directories": {
+      "output": "out"
+    }
   },
   "keywords": [],
   "author": "Omkar Iyer",
@@ -28,7 +50,9 @@
   },
   "dependencies": {
     "dotenv": "^16.4.5",
+    "electron-builder": "^25.0.5",
     "electron-squirrel-startup": "^1.0.1",
+    "electron-updater": "^6.3.4",
     "sqlite3": "^5.1.7",
     "update-electron-app": "^3.0.0"
   },

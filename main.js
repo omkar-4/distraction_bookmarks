@@ -4,11 +4,6 @@ const path = require("node:path");
 require("dotenv").config();
 const { db, addBookmark } = require("./db");
 
-const { updateElectronApp, UpdateSourceType } = require("update-electron-app");
-updateElectronApp({
-  updateInterval: '5 minutes',
-});
-
 const isDev = process.env.NODE_ENV === "dev"; // true/false
 
 const createWindow = () => {
