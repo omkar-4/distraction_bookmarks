@@ -1,6 +1,10 @@
 const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const { autoUpdater } = require("electron-updater");
 const path = require("node:path");
+require("dotenv").config();
+
+const { updateElectronApp } = require("update-electron-app");
+updateElectronApp(); // additional configuration options available
 
 let mainWindow;
 

@@ -24,6 +24,7 @@ function App() {
   return (
     <div className="App">
       <h1>Welcome to My Electron App</h1>
+      <h2>hoo hoo</h2>
 
       {updateAvailable && !updateDownloaded && (
         <div>

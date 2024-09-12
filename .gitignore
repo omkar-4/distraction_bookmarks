@@ -2,3 +2,5 @@
 /assets/identity
 
 out/
+
+.env
