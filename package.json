@@ -1,16 +1,16 @@
 {
   "name": "distraction_bookmarks",
-  "version": "1.0.5",
+  "version": "1.0.1",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start:frontend": "cd frontend && npm run dev",
-    "start:electron": "electron .",
-    "start:dev": "concurrently \"npm run start:frontend\" \"npm run start:electron\"",
-    "start:prod": "npm run start:electron",
-    "package": "electron-forge package",
-    "make:frontend": "cd frontend && npm run build && cd ..",
-    "make": "npm run make:frontend && electron-forge make"
+    "start:electron": "electron-forge start",
+    "start:dev": "cd frontend && npm run dev && cd .. && electron-forge start",
+    "build:frontend": "cd frontend && npm run build && cd ..",
+    "start:prod": "cd frontend && npm run build && cd.. && electron-forge start",
+    "make": "npm run build:frontend && electron-forge make",
+    "publish": "npm run build:frontend && electron-forge publish",
+    "package": "npm run build:frontend && electron-forge package"
   },
   "build": {
     "appId": "com.omkar.distraction_bookmarks",
@@ -48,15 +48,18 @@
     "@electron-forge/plugin-fuses": "^7.4.0",
     "@electron/fuses": "^1.8.0",
     "concurrently": "^9.0.0",
-    "electron": "^32.0.2"
+    "electron": "^32.0.2",
+    "electron-builder": "^25.0.5"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
-    "electron-builder": "^25.0.5",
     "electron-squirrel-startup": "^1.0.1",
     "electron-updater": "^6.3.4",
     "sqlite3": "^5.1.7",
     "update-electron-app": "^3.0.0"
   },
-  "repository": "https://github.com/omkar-4/distraction_bookmarks"
+  "repository": "https://github.com/omkar-4/distraction_bookmarks",
+  "config": {
+    "forge": "./forge.config.js"
+  }
 }

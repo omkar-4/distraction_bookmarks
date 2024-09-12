@@ -1,71 +1,47 @@
-const { app, BrowserWindow, dialog } = require('electron');
-const path = require('path');
-const { autoUpdater } = require('electron-updater');
-require('dotenv').config();
-console.log('Environment:', process.env.NODE_ENV);
+const { app, BrowserWindow, ipcMain, dialog } = require("electron");
+const { autoUpdater } = require("electron-updater");
+const path = require("node:path");
 
-
-const isDev = process.env.NODE_ENV === 'dev';
+let mainWindow;
 
 const createWindow = () => {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      contextIsolation: true,
-      nodeIntegration: false
+      preload: path.join(__dirname, "preload.js"),
     },
-    icon: path.join(__dirname, 'icons/logo.ico'),
   });
 
-  if (isDev) {
-    mainWindow.loadURL('http://localhost:5173');
+  if (process.env.NODE_ENV === "dev") {
+    mainWindow.loadURL("http://localhost:5173");
   } else {
-    mainWindow.loadFile(path.join(__dirname, 'frontend/dist/index.html'));
-  }
-
-  // Check for updates
-  if (!isDev) {
-    autoUpdater.checkForUpdates();
+    mainWindow.loadFile("frontend/dist/index.html");
   }
 };
 
 app.whenReady().then(() => {
   createWindow();
-  app.on('activate', () => {
+
+  app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
+
+  autoUpdater.checkForUpdatesAndNotify();
 });
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+autoUpdater.on("update-available", () => {
+  mainWindow.webContents.send("update_available");
 });
 
-// Update available event
-autoUpdater.on('update-available', () => {
-  dialog
-    .showMessageBox({
-      type: 'info',
-      title: 'Update Available',
-      message: 'An update is available. Do you want to update now?',
-      buttons: ['Yes', 'No']
-    })
-    .then((result) => {
-      if (result.response === 0) {
-        autoUpdater.quitAndInstall();
-      }
-    });
+autoUpdater.on("update-downloaded", () => {
+  mainWindow.webContents.send("update_downloaded");
 });
 
-autoUpdater.on('error', (error) => {
-  console.error('AutoUpdater Error:', error);
+ipcMain.on("restart_app", () => {
+  autoUpdater.quitAndInstall();
 });
 
-autoUpdater.on('update-not-available', () => {
-  console.log('No updates available.');
-});
-
-autoUpdater.on('update-downloaded', () => {
-  console.log('Update downloaded.');
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") app.quit();
 });

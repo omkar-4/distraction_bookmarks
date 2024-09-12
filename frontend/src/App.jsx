@@ -1,48 +1,44 @@
-// App.js
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
-const App = () => {
-  const [versionInfo, setVersionInfo] = useState({
-    chrome: "",
-    node: "",
-    electron: "",
-  });
-  const [updateMessage, setUpdateMessage] = useState("");
+function App() {
+  const [updateAvailable, setUpdateAvailable] = useState(false);
+  const [updateDownloaded, setUpdateDownloaded] = useState(false);
 
   useEffect(() => {
-    if (
-      window.electron &&
-      typeof window.electron.getVersionInfo === "function"
-    ) {
-      setVersionInfo(window.electron.getVersionInfo());
-    } else {
-      console.error("getVersionInfo function is not available.");
-    }
+    // Listen for update-available message
+    window.electronAPI.onUpdateAvailable(() => {
+      setUpdateAvailable(true);
+    });
 
-    if (window.electron) {
-      window.electron.onUpdateAvailable(() => {
-        setUpdateMessage("Update available! Downloading...");
-      });
-
-      window.electron.onUpdateDownloaded(() => {
-        setUpdateMessage("Update downloaded! Restart the app to apply.");
-      });
-    }
-
-    window.electron.checkForUpdates(); // Check for updates on load
+    // Listen for update-downloaded message
+    window.electronAPI.onUpdateDownloaded(() => {
+      setUpdateDownloaded(true);
+    });
   }, []);
 
+  const handleUpdateNow = () => {
+    // Restart the app to install the update
+    window.electronAPI.restartApp();
+  };
+
   return (
-    <div>
-      <p>Chrome Version: {versionInfo.chrome}</p>
-      <p>Node Version: {versionInfo.node}</p>
-      <p>Electron Version: {versionInfo.electron}</p>
-      <h2>helleo</h2>
-      <h2>kaise ho</h2>
-      <h2>kaise ho</h2>
-      <h4>{updateMessage}</h4>
+    <div className="App">
+      <h1>Welcome to My Electron App</h1>
+
+      {updateAvailable && !updateDownloaded && (
+        <div>
+          <p>An update is available. It will be downloaded automatically.</p>
+        </div>
+      )}
+
+      {updateDownloaded && (
+        <div>
+          <p>Update downloaded! Click the button below to install.</p>
+          <button onClick={handleUpdateNow}>Install Update</button>
+        </div>
+      )}
     </div>
   );
-};
+}
 
 export default App;
