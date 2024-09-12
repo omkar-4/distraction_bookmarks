@@ -1,6 +1,6 @@
 {
   "name": "distraction_bookmarks",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "main.js",
   "scripts": {
     "start:frontend": "cd frontend && npm run dev",
