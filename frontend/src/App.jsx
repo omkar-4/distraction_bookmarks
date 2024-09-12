@@ -1,3 +1,4 @@
+// App.js
 import { useEffect, useState } from "react";
 
 const App = () => {
@@ -18,19 +19,6 @@ const App = () => {
       console.error("getVersionInfo function is not available.");
     }
 
-    // Listen for update messages from the main process
-    if (window.bridge) {
-      window.bridge.updateMessage((event, message) => {
-        setUpdateMessage(message);
-      });
-    }
-
-    // Check for updates when the component loads
-    if (window.electron && typeof window.electron.checkForUpdates === "function") {
-      window.electron.checkForUpdates();
-    }
-
-    // Listen for update-available and update-downloaded events
     if (window.electron) {
       window.electron.onUpdateAvailable(() => {
         setUpdateMessage("Update available! Downloading...");
@@ -40,6 +28,8 @@ const App = () => {
         setUpdateMessage("Update downloaded! Restart the app to apply.");
       });
     }
+
+    window.electron.checkForUpdates(); // Check for updates on load
   }, []);
 
   return (
@@ -49,8 +39,8 @@ const App = () => {
       <p>Electron Version: {versionInfo.electron}</p>
       <h2>helleo</h2>
       <h2>kaise ho</h2>
-      <h2>changa ho?</h2>
-      <h4 id="update-h4">{updateMessage}</h4>
+      <h2>kaise ho</h2>
+      <h4>{updateMessage}</h4>
     </div>
   );
 };
