@@ -35,20 +35,20 @@ const createWindow = () => {
 };
 
 // show message to user that update is available
-autoUpdater.on("update-available", () => {
-  dialog
-    .showMessageBox({
-      type: "info",
-      title: "Update Available",
-      message: "An update is available. Do you want to update now?",
-      buttons: ["Yes", "No"],
-    })
-    .then((result) => {
-      if (result.response === 0) {
-        autoUpdater.quitAndInstall();
-      }
-    });
-});
+// autoUpdater.on("update-available", () => {
+//   dialog
+//     .showMessageBox({
+//       type: "info",
+//       title: "Update Available",
+//       message: "An update is available. Do you want to update now?",
+//       buttons: ["Yes", "No"],
+//     })
+//     .then((result) => {
+//       if (result.response === 0) {
+//         autoUpdater.quitAndInstall();
+//       }
+//     });
+// });
 
 app.whenReady().then(() => {
   createWindow();
@@ -58,6 +58,7 @@ app.whenReady().then(() => {
   });
 
   autoUpdater.checkForUpdates();
+  // curWindow.showMessage("check for updates");
 });
 
 app.on("window-all-closed", () => {

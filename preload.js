@@ -1,7 +1,12 @@
 // preload.js
-const { contextBridge } = require('electron');
+const { contextBridge, ipcRenderer } = require("electron");
 
-contextBridge.exposeInMainWorld('electron', {
+let bridge = {
+  updateMessage: (callback) => ipcRenderer.on("updateMessage", callback),
+};
+contextBridge.exposeInMainWorld("bridge", bridge);
+
+contextBridge.exposeInMainWorld("electron", {
   getVersionInfo: () => ({
     chrome: process.versions.chrome,
     node: process.versions.node,
@@ -9,18 +14,15 @@ contextBridge.exposeInMainWorld('electron', {
   }),
 });
 
-
-
 window.addEventListener("DOMContentLoaded", () => {
   console.log("preloader running ...");
-  
+  window.bridge.updateMessage(updateMessage);
+
   const replaceText = (selector, text) => {
     const element = document.getElementById(selector);
     if (element) element.innerText = text;
 
     window.getVersionInfo = () => {
-      let userAgent = navigator.userAgent; 
-
       return {
         chrome: process.versions.chrome,
         node: process.versions.node,
@@ -33,3 +35,8 @@ window.addEventListener("DOMContentLoaded", () => {
     replaceText(`${dependency}-version`, process.versions[dependency]);
   }
 });
+
+function updateMessage(e, msg) {
+  document.getElementById("update-h4").innerHTML = msg;
+  console.log("update message logged in view");
+}

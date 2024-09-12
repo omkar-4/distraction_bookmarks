@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const VersionInfo = () => {
+const App = () => {
   const [versionInfo, setVersionInfo] = useState({
     chrome: "",
     node: "",
@@ -24,8 +24,10 @@ const VersionInfo = () => {
       <p>Node Version: {versionInfo.node}</p>
       <p>Electron Version: {versionInfo.electron}</p>
       <h2>helleo</h2>
+      <h2>kaise ho</h2>
+      <h4 id="update-h4"></h4>
     </div>
   );
 };
 
-export default VersionInfo;
+export default App;
