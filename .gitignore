@@ -5,4 +5,3 @@ out/
 
 .env
 *.env
-config/secrets.json
